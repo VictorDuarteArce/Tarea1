@@ -9,6 +9,7 @@ class State {
       int i0; //fila del cero
       int j0; // columna del cero
       State *parent;
+      int value; // valor de la heuristica
       State();
       State(int size);
       State(int size, State *parent);
@@ -24,5 +25,6 @@ class State {
       State *copy();
       bool equals(State *s); // compara dos estados
       //bool equals(State *s); // compara dos estados
+      void calculateValue(); // calcula el valor de la heuristica
 
 };

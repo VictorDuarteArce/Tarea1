@@ -2,11 +2,14 @@
 
 int main() {
     Heap *h = new Heap(2);
-    for(int i=0; i<100; i++) {
-        h->push(i);
+    for(int i=0; i<128; i++){
+        State *s = new State();
+        s->value = i;
+        h->push(s);
     }
 
-    for(int i=0; i<100; i++) {
-        std::cout << h->pop() << std::endl;
+    for(int i=0; i<128; i++){
+        State *s = h->pop();
+        printf("%d\n", s->value);
     }
 }

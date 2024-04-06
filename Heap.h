@@ -1,12 +1,16 @@
 #include <iostream>
+#include "State.h"
 
 class Heap {
 public:
-    int *arr;
+    State **arr; // Arreglo de estados
     int capacity;
     int size; // indice del ultimo no ocupado o cantidad de elementos
     Heap(int capacity);
     ~Heap();
-    void push(int val);
-    int pop();
+    void push(State* val);
+    State* pop();
+    void print();
+    bool isEmpty();
+    bool find(State* val);
 };

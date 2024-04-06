@@ -43,19 +43,19 @@ void Puzzle::solve() {
         cout << "No se pudo generar el estado inicial" << endl;
         return;
     }
-    open-> push(e_init); // agrega en los abierto el tablero inicial
-    all->push(e_init); // agrega en todos (ex cerrados )el tablero inicial
+    open->push(e_init); // agrega en los abierto el tablero inicial
+    all->push(e_init); // agrega en todos (ex cerrados)el tablero inicial
     while (!open->isEmpty()) { // mientras existan nodos por visitar
-        State *e = open->pop(); // deberia obtener el mejor estado
-        cout << "Estado actual:"<< e << " i0:" << e->i0 << " j0:" << e->j0 << " size:" << e->size << " parent:"<< e->parent << endl;
+        State* e = open->pop(); // deberia obtener el mejor estado
+        printf("Estado actual: %p i0: %d j0: %d parent:%p\n", e, e->i0, e->j0, e->parent);
         if (e->isSol()) {
-            cout << "Encontramos la solucion:" << endl;
+            printf("Encontramos la solucion\n");
             e->print();
             return;
         }
         //cout << "Expandiendo el estado" << endl;
         // expandir el estado e --> notar la repeticion que se hace (no es buena practica, deberia disponerse de un arreglo de movimientos posibles)
-        State *e_up = e->up();  // si genera estado invalido, genera nullptr
+        State* e_up = e->up();  // si genera estado invalido, genera nullptr
         if (e_up!=nullptr && // si es valido
                 !all->find(e_up)) { // si no esta en todos
             open->push(e_up);
