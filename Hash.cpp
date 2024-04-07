@@ -1,7 +1,7 @@
 #include "Hash.h"
 
 Hash::Hash(){
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 1000; i++){
         hashTable[i] = NULL;
     }
 }
@@ -9,7 +9,7 @@ Hash::~Hash(){
     clear();
 }
 void Hash::clear(){
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 1000; i++){
         if(hashTable[i] != NULL){
             delete hashTable[i];
             hashTable[i] = NULL;
@@ -40,13 +40,13 @@ bool Hash::find(State* state){
     return false;
 }
 int Hash::hashFunction(State* state){
-    return state->id % 100;
+    return state->id % 1000;
 }
 void Hash::print(){
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 1000; i++){
         if(hashTable[i] != NULL){
             for(Node* current = hashTable[i]; current != NULL; current = current->next){
-                printf("%d ", current->state->id);
+                printf("%lld ", current->state->id);
             }
             putchar('\n');
         }

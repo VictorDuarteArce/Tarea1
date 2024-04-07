@@ -1,5 +1,5 @@
 #include <iostream>
-#include "State.h"
+#include "Hash.h"
 
 class Heap {
 public:

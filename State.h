@@ -1,7 +1,7 @@
 #include <iostream>
 class State {
     public:
-        int id; // identificador del estado
+        long long unsigned int id; // identificador del estado
         int **board; // tablero size x size
         int size;
         // al cargar el archivo busco donde esta el 0
@@ -9,6 +9,7 @@ class State {
         int j0; // columna del cero
         State *parent;
         int value; // valor de la heuristica
+        int level; // nivel del arbol
         State();
         State(int size);
         State(int size, State *parent);

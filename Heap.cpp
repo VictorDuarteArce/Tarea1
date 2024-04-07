@@ -6,7 +6,7 @@ Heap::Heap(int capacity){
     this->arr = new State*[capacity];
 }
 
-Heap::~Heap() {
+Heap::~Heap(){
     delete [] arr;
 }
 
@@ -26,7 +26,7 @@ void Heap::push(State* val) {
     arr[size] = val;
     size++;
     int i = size-1;
-    while(i != 0 && arr[i]->value < arr[(i-1)/2]->value) { // min heap
+    while(i != 0 && arr[i]->level < arr[(i-1)/2]->level) { // min heap
         State* temp = arr[i]; // realizamos el  swap
         arr[i] = arr[(i-1)/2];
         arr[(i-1)/2] = temp;
@@ -46,10 +46,10 @@ State* Heap::pop(){
         int left = 2*i+1;
         int right = 2*i+2;
         int min = left;
-        if (right < size && arr[right]->value < arr[left]->value) {
+        if (right < size && arr[right]->level < arr[left]->level) {
             min = right;
         }
-        if (arr[i]->value < arr[min]->value) {
+        if (arr[i]->level < arr[min]->level) {
             break; // ya esta ordenado
         }
         State* temp = arr[i]; // si no cuple orden entonces hacemos el swap
@@ -62,7 +62,7 @@ State* Heap::pop(){
 void Heap::print() {
     putchar('{');
     for(int i=0; i<size; i++) {
-        printf("%d ", arr[i]->value);
+        printf("%d ", arr[i]->level);
     }
     putchar('}');
     putchar('\n');

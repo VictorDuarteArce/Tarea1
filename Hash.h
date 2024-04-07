@@ -10,7 +10,7 @@ struct Node {
 typedef struct Node Node;
 class Hash {
 private:
-    Node* hashTable[100];
+    Node* hashTable[1000];
     int hashFunction(State* state);
 public:
     Hash();
