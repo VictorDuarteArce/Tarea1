@@ -1,35 +1,24 @@
 #include "State.h"
-
-struct NodeAVL {
-    State* state;
-    NodeAVL *left;
-    NodeAVL *right;
-    int height;
-    int balance;
-};
-
 class AVL{
     public:
+        State** states;
+        int capacity;
         AVL();
         ~AVL();
+        State* goLeft(int index);
+        State* goRight(int index);
         void push(State* state);
-        void remove(State* state);
-        State* pop();
+        void pushHelper(State* state, int index);
         bool find(State* state);
+        bool findHelper(State** temp, State* state, int index);
+        //void balance();
         void print();
-        bool isEmpty();
-    private:
-        NodeAVL *root;
-        NodeAVL* insert(NodeAVL *node, State* state);
-        NodeAVL* remove(NodeAVL *node, State* state);
-        NodeAVL* find(NodeAVL *node, State* state);
-        void print(NodeAVL *node);
-        void update(NodeAVL *node);
-        NodeAVL* rotateLeft(NodeAVL *node);
-        NodeAVL* rotateRight(NodeAVL *node);
-        NodeAVL* balance(NodeAVL *node);
-        NodeAVL* removeMin(NodeAVL *node);
-        NodeAVL* findMin(NodeAVL *node);
-        void clear(NodeAVL *node);
+        void printPreOrder();
+        void printPreOrderHelper(State** temp, int index);
+        void printInOrder();
+        void printInOrderHelper(State** temp, int index);
+        void printPostOrder();
+        void printPostOrderHelper(State** temp, int index);
+        void printLevelByLevel();
+        void printLevelByLevelHelper(State** temp, int index, int level);
 };
-

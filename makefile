@@ -15,6 +15,9 @@ Heap.o: Heap.cpp Heap.h
 AVL.o: AVL.cpp AVL.h
 	g++ -g -c AVL.cpp
 
+Hash.o: Hash.cpp Hash.h
+	g++ -g -c Hash.cpp
+
 testState: testState.cpp State.o
 	g++ -g State.o testState.cpp -o testState
 
@@ -30,8 +33,11 @@ testPuzzle: testPuzzle.cpp Puzzle.o State.o Stack.o AVL.o
 testAVL: testAVL.cpp AVL.o State.o
 	g++ -g AVL.o State.o testAVL.cpp -o testAVL
 
-main: Puzzle.o State.o Stack.o main.cpp
-	g++ -g State.o Stack.o Puzzle.o main.cpp -o main
+testHash: testHash.cpp Hash.o State.o
+	g++ -g Hash.o State.o testHash.cpp -o testHash
 
-clean:
-	rm -f *.o testState testStack testPuzzle testHeap testAVL main
+main: Puzzle.o State.o Stack.o Hash.o main.cpp
+	g++ -g State.o Stack.o Puzzle.o Hash.o main.cpp -o main
+
+clear:
+	rm -f *.o testState testStack testPuzzle testHeap testAVL testHash main

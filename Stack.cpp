@@ -17,15 +17,15 @@ bool Stack::isEmpty() {
     return (top==-1); // es nuestra convencion para ver si esta vacio
 }
 
-void Stack::push(State * s) {
-    if (top==size-1) {
+void Stack::push(State* s) {
+    if(top==size-1){
         State **data_tmp = new State*[size*2]; // crea un nuevo arreglo de tamaño doble
-        for (int i=0; i<size; i++) {
-            data_tmp[i]=data[i]; // ######copia los datos del arreglo original al nuevo
+        for (int i = 0; i < size; i++){
+            data_tmp[i] = data[i]; // ######copia los datos del arreglo original al nuevo
         }
         delete[] data; // libera la memoria del arreglo original
         data=data_tmp; // asigna el nuevo puntero a data
-        size *=2; // actualiza el tamaño (size=size*2)
+        size *=2; // actualiza el tamaño (size = size*2)
     }
     ++top;
     data[top]=s; // ### incrementa top y luego asigna s

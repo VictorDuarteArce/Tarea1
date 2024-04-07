@@ -1,146 +1,116 @@
 #include "AVL.h"
 
-AVL::AVL() {
-    root = nullptr;
+AVL::AVL(){
+    this->capacity = 0;
+    this->states = nullptr;
 }
-AVL::~AVL() {
-    clear(root);
+AVL::~AVL(){
+    delete[] this->states;
 }
-void AVL::clear(NodeAVL *node) {
-    if(node != nullptr) {
-        clear(node->left);
-        clear(node->right);
-        delete node;
+State* AVL::goLeft(int index){
+    return this->states[2*index+1];
+}
+State* AVL::goRight(int index){
+    return this->states[2*index+2];
+}
+void AVL::push(State* state){
+    pushHelper(state, 0);
+}
+void AVL::pushHelper(State* state, int index){
+    if(this->capacity == 0){
+        this->states = new State*[1];
+        this->states[0] = state;
+        this->capacity = 1;
+        return;
     }
-}
-void AVL::push(State* state) {
-    root = insert(root, state);
-}
-NodeAVL* AVL::insert(NodeAVL *node, State* state) {
-    if(node == nullptr){
-        node = new NodeAVL();
-        node->state = state;
-        node->left = nullptr;
-        node->right = nullptr;
-        node->height = 1;
-        node->balance = 0;
-    } else if(state->value < node->state->value) {
-        node->left = insert(node->left, state);
-    } else if(state->value > node->state->value) {
-        node->right = insert(node->right, state);
-    }
-    return balance(node);
-}
-void AVL::remove(State* state) {
-    root = remove(root, state);
-}
-NodeAVL* AVL::remove(NodeAVL *node, State* state) {
-    if(node == nullptr) {
-        return nullptr;
-    }
-    if(state->value < node->state->value) {
-        node->left = remove(node->left, state);
-    } else if(state->value > node->state->value) {
-        node->right = remove(node->right, state);
-    } else {
-        NodeAVL *left = node->left;
-        NodeAVL *right = node->right;
-        delete node;
-        if(right == nullptr) {
-            return left;
+    while(index >= this->capacity){
+        printf("a ");
+        State** temp = new State*[this->capacity+1];
+        for(int i = 0; i < this->capacity; i++){
+            temp[i] = this->states[i];
         }
-        NodeAVL *min = findMin(right);
-        min->right = removeMin(right);
-        min->left = left;
-        return balance(min);
+        delete[] this->states;
+        this->states = temp;
+        this->capacity++;
     }
-    return balance(node);
-}
-NodeAVL* AVL::findMin(NodeAVL *node) {
-    if(node->left == nullptr) {
-        return node;
+    if(this->states[index] == nullptr){
+        printf("Encontramos espacio\n");
+        this->states[index] = state;
+        return;
     }
-    return findMin(node->left);
-}
-NodeAVL* AVL::removeMin(NodeAVL *node) {
-    if(node->left == nullptr) {
-        return node->right;
-    }
-    node->left = removeMin(node->left);
-    return balance(node);
-}
-bool AVL::find(State* state) {
-    return find(root, state) != nullptr;
-}
-NodeAVL* AVL::find(NodeAVL *node, State* state) {
-    if(node == nullptr) {
-        return nullptr;
-    }
-    if(state->value < node->state->value) {
-        return find(node->left, state);
-    } else if(state->value > node->state->value) {
-        return find(node->right, state);
-    }
-    return node;
-}
-void AVL::print() {
-    print(root);
-    putchar('\n');
-}
-void AVL::print(NodeAVL *node) {
-    if(node != nullptr) {
-        print(node->left);
-        printf("%d ", node->state->value);
-        print(node->right);
+    if(state->value < this->states[index]->value){
+        pushHelper(state, 2*index+1);
+    }else{
+        pushHelper(state, 2*index+2);
     }
 }
-void AVL::update(NodeAVL *node) {
-    int hl = (node->left == nullptr) ? 0 : node->left->height;
-    int hr = (node->right == nullptr) ? 0 : node->right->height;
-    node->height = 1 + ((hl > hr) ? hl : hr);
-    node->balance = hr - hl;
+bool AVL::find(State* state){
+    return findHelper(this->states, state, 0);
 }
-NodeAVL* AVL::rotateLeft(NodeAVL *node) {
-    NodeAVL *right = node->right;
-    node->right = right->left;
-    right->left = node;
-    update(node);
-    update(right);
-    return right;
-}
-NodeAVL* AVL::rotateRight(NodeAVL *node) {
-    NodeAVL *left = node->left;
-    node->left = left->right;
-    left->right = node;
-    update(node);
-    update(left);
-    return left;
-}
-NodeAVL* AVL::balance(NodeAVL *node) {
-    update(node);
-    if(node->balance == -2) {
-        if(node->left->balance == 1) {
-            node->left = rotateLeft(node->left);
-        }
-        return rotateRight(node);
+bool AVL::findHelper(State** temp, State* state, int index){
+    if(temp[index] == nullptr){
+        return false;
     }
-    if(node->balance == 2) {
-        if(node->right->balance == -1) {
-            node->right = rotateRight(node->right);
-        }
-        return rotateLeft(node);
+    if(temp[index]->value == state->value){
+        return true;
     }
-    return node;
-}
-bool AVL::isEmpty() {
-    return root == nullptr;
-}
-State* AVL::pop() {
-    if(isEmpty()) {
-        return nullptr;
+    if(state->value < temp[index]->value){
+        return findHelper(temp, state, 2*index+1);
+    }else{
+        return findHelper(temp, state, 2*index+2);
     }
-    NodeAVL *node = findMin(root);
-    State *state = node->state;
-    root = removeMin(root);
-    return state;
+}
+void AVL::print(){
+    printf("Printing Preorder\n");
+    printPreOrder();
+    printf("Printing Inorder\n");
+    printInOrder();
+    printf("Printing Postorder\n");
+    printPostOrder();
+    printf("Printing Level by Level\n");
+    printLevelByLevel();
+}
+void AVL::printPreOrder(){
+    printPreOrderHelper(this->states, 0);
+}
+void AVL::printPreOrderHelper(State** temp, int index){
+    if(temp[index] == nullptr){
+        return;
+    }
+    printf("%d\n", temp[index]->value);
+    printPreOrderHelper(temp, 2*index+1);
+    printPreOrderHelper(temp, 2*index+2);
+}
+void AVL::printInOrder(){
+    printInOrderHelper(this->states, 0);
+}
+void AVL::printInOrderHelper(State** temp, int index){
+    if(temp[index] == nullptr){
+        return;
+    }
+    printInOrderHelper(temp, 2*index+1);
+    printf("%d\n", temp[index]->value);
+    printInOrderHelper(temp, 2*index+2);
+}
+void AVL::printPostOrder(){
+    printPostOrderHelper(this->states, 0);
+}
+void AVL::printPostOrderHelper(State** temp, int index){
+    if(temp[index] == nullptr){
+        return;
+    }
+    printPostOrderHelper(temp, 2*index+1);
+    printPostOrderHelper(temp, 2*index+2);
+    printf("%d\n", temp[index]->value);
+}
+void AVL::printLevelByLevel(){
+    printLevelByLevelHelper(this->states, 0, 0);
+}
+void AVL::printLevelByLevelHelper(State** temp, int index, int level){
+    if(temp[index] == nullptr){
+        return;
+    }
+    printLevelByLevelHelper(temp, 2*index+1, level+1);
+    printf("Level %d: %d\n", level, temp[index]->value);
+    printLevelByLevelHelper(temp, 2*index+2, level+1);
 }

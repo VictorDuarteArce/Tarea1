@@ -1,17 +1,17 @@
 #include "State.h"
 
 State::State(){ 
-    board=nullptr; //NULL
-    size=0;
-    parent=nullptr;
+    board = nullptr; //NULL
+    size = 0;
+    parent = nullptr;
 }
 
 State::State(int size) {
     this->size = size;
     this->board = new int*[size];
-    for(int i=0; i<size; i++) {
+    for(int i=0; i < size; i++) {
         this->board[i] = new int[size];
-        for(int j=0; j<size; j++) {
+        for(int j=0; j < size; j++) {
             this->board[i][j] = 0;
         }
     }
@@ -19,12 +19,12 @@ State::State(int size) {
 
 }
 
-State::State(int size, State *parent) {
+State::State(int size, State *parent){
     this->size = size;
     this->board = new int*[size];
-    for(int i=0; i<size; i++) {
+    for(int i=0; i < size; i++){
         this->board[i] = new int[size];
-        for(int j=0; j<size; j++) {
+        for(int j=0; j < size; j++){
             this->board[i][j] = 0;
         }
     }

@@ -1,5 +1,4 @@
-#include <iostream>
-#include "State.h"
+#include "Hash.h"
 
 using namespace std;
 
