@@ -27,8 +27,8 @@ State * Puzzle::generate_init(){
         }
     }
     // buscar el cero
-    for (int i=0; i<size; i++) {
-        for (int j=0; j<size; j++) {
+    for (int i=0; i < size; i++) {
+        for (int j=0; j < size; j++) {
             if(board[i][j] == 0){
                 e->i0=i;
                 e->j0=j;
@@ -51,15 +51,15 @@ void Puzzle::solve(){
     }
     int i = 1;
     open->push(e_init); // agrega en los abierto el tablero inicial
-    all->push(e_init); // agrega en todos (ex cerrados)el tablero inicial
+    all->push(e_init->id); // agrega en todos (ex cerrados)el tablero inicial
     while (!open->isEmpty()){ // mientras existan nodos por visitar
         //printf("Open %d\n", i);
         //open->print();
         State* e = open->pop(); // deberia obtener el mejor estado
-        printf("Estado actual: %llu i0: %d j0: %d parent:%p\n", e->id, e->i0, e->j0, e->parent);
+        //printf("Estado actual: %llu i0: %d j0: %d parent:%p\n", e->id, e->i0, e->j0, e->parent);
         //printf("All %d\n", i);
         //all->print();
-        if (e->isSol()) {
+        if (e->isSol()){
             printf("Encontramos la solucion\n");
             e->print();
             return;
@@ -77,11 +77,18 @@ void Puzzle::solve(){
                     e_up->id = e_up->id * e_up->id * e_up->id + e_up->board[i][j];
                 }
             }
+            int** aux;
+            aux = e_up->board;
+            for(int i = 0; i < e_up->size; i++){
+                delete [] aux[i];
+            }
+            delete [] aux;
+            e_up->board = nullptr; // borramos la matriz porque ya la tenemos en el id
         }
         if (e_up!=nullptr && // si es valido
-                !all->find(e_up)) { // si no esta en todos
+                !all->find(e_up->id)) { // si no esta en todos
             open->push(e_up);
-            all->push(e_up);
+            all->push(e_up->id);
         }
 
         State *e_down = e->down();  // si genera estado invalido, genera nullptr
@@ -97,11 +104,18 @@ void Puzzle::solve(){
                     e_down->id = e_down->id * e_down->size * e_down->size + e_down->board[i][j];
                 }
             }
+            int** aux;
+            aux = e_down->board;
+            for(int i = 0; i < e_down->size; i++){
+                delete [] aux[i];
+            }
+            delete [] aux;
+            e_down->board = nullptr;
         }
         if (e_down!=nullptr &&
-                !all->find(e_down)) {
+                !all->find(e_down->id)) {
             open->push(e_down);
-            all->push(e_down);
+            all->push(e_down->id);
         }
 
         State *e_left = e->left();  // si genera estado invalido, genera nullptr
@@ -117,11 +131,18 @@ void Puzzle::solve(){
                     e_left->id = e_left->id * e_left->size * e_left->size + e_left->board[i][j];
                 }
             }
+            int** aux;
+            aux = e_left->board;
+            for(int i = 0; i < e_left->size; i++){
+                delete [] aux[i];
+            }
+            delete [] aux;
+            e_left->board = nullptr;
         }
         if (e_left!=nullptr &&
-                !all->find(e_left)){
+                !all->find(e_left->id)){
             open->push(e_left);
-            all->push(e_left);
+            all->push(e_left->id);
         }
 
         State *e_right = e->right();  // si genera estado invalido, genera nullptr
@@ -135,11 +156,18 @@ void Puzzle::solve(){
                     e_right->id = e_right->id * e_right->size * e_right->size + e_right->board[i][j];
                 }
             }
+            int** aux;
+            aux = e_right->board;
+            for(int i = 0; i < e_right->size; i++){
+                delete [] aux[i];
+            }
+            delete [] aux;
+            e_right->board = nullptr;
         }
         if (e_right!=nullptr &&
-                !all->find(e_right)) {
+                !all->find(e_right->id)) {
             open->push(e_right);
-            all->push(e_right);
+            all->push(e_right->id);
         }
         i++;
     }

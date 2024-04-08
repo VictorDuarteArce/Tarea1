@@ -9,6 +9,8 @@ class State {
         int j0; // columna del cero
         State *parent;
         int value; // valor de la heuristica
+        int distance; // distancia de manhattan
+        int hits; // aciertos
         int level; // nivel del arbol
         State();
         State(int size);
@@ -26,4 +28,7 @@ class State {
         bool equals(State *s); // compara dos estados
         //bool equals(State *s); // compara dos estados
         void calculateValue(); // calcula el valor de la heuristica
+        void calculateHits(); // calcula los aciertos
+        void calculateDistance(); // calcula la distancia
+        int* find(int value); // busca la posicion de un valor
 };

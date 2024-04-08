@@ -70,16 +70,7 @@ void State::print() {
 }
 
 bool State::isSol() {
-   int k = 1;
-    for(int i = 0; i < size; i++) {
-        for(int j = 0; j < size; j++) {
-            if(this->board[i][j] != (k % (this->size * this->size))){
-                return false;
-            }
-            k++;
-        }
-    }
-    return true; 
+    return hits == this->size * this->size;
 }
 
 State* State::copy() {
@@ -141,28 +132,51 @@ State * State::left() {
 }
 
 bool State::equals(State *s) {
-    // comparamos solo el tablero
-    for(int i=0; i<this->size; i++) {
-        for(int j=0; j<this->size; j++) {
-            if (this->board[i][j] != s->board[i][j]) {
-                return false;
-            }
-        }
-    }
-    // el resto de los elementos (size,parent,i0,j0) de state debiesen ser iguales 
-    // sino existe un error en la implementacion
-    return true;
+    return this->id == s->id;
 }
-void State::calculateValue(){
+void State::calculateHits(){
     int value = 0;
     int k = 1;
     for(int i = 0; i < size; i++) {
         for(int j = 0; j < size; j++) {
-            if(this->board[i][j] != 0 && this->board[i][j] != (k % (this->size * this->size))){
+            int aux = k % (this->size * this->size);
+            if(this->board[i][j] != 0 && this->board[i][j] == aux){
                 value++;
             }
             k++;
         }
     }
     this->value = value;
+}
+void State::calculateDistance(){
+    int value = 0;
+    int k = 1;
+    for(int i = 0; i < size; i++) {
+        for(int j = 0; j < size; j++) {
+            int *aux = this->find(k % (this->size * this->size));
+            value += abs(i - aux[0]) * abs(i - aux[0]) + abs(j - aux[1]) * abs(j - aux[1]);
+            k++;this->value = 1 * level - hits;
+            delete aux;
+        }
+    }
+    this->distance = value;
+
+}
+int* State::find(int value){
+    int *pos = new int[2];
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            if(this->board[i][j] == value){
+                pos[0] = i;
+                pos[1] = j;
+                return pos;
+            }
+        }
+    }
+    return nullptr;
+}
+void State::calculateValue(){
+    this->calculateHits();
+    this->calculateDistance();
+    this->value = 16 * level - distance;
 }
