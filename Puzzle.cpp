@@ -21,11 +21,7 @@ State * Puzzle::generate_init(){
         return nullptr;
     }
     //generar id
-    for(int i = 0; i < e->size; i++){
-        for(int j = 0; j < e->size; j++){
-            e->id = e->id * e->size * e->size + e->board[i][j];
-        }
-    }
+    e->generateId();
     // buscar el cero
     for (int i=0; i < size; i++) {
         for (int j=0; j < size; j++) {
@@ -67,105 +63,33 @@ void Puzzle::solve(){
         //cout << "Expandiendo el estado" << endl;
         // expandir el estado e --> notar la repeticion que se hace (no es buena practica, deberia disponerse de un arreglo de movimientos posibles)
         State* e_up = e->up();  // si genera estado invalido, genera nullptr
-        if(e_up != nullptr){
-            e_up->level = i;
-            e_up->parent = e;
-            e_up->calculateValue();
-            //calcula el id
-            for(int i = 0; i < e_up->size; i++){
-                for(int j = 0; j < e_up->size; j++){
-                    e_up->id = e_up->id * e_up->id * e_up->id + e_up->board[i][j];
-                }
-            }
-            int** aux;
-            aux = e_up->board;
-            for(int i = 0; i < e_up->size; i++){
-                delete [] aux[i];
-            }
-            delete [] aux;
-            e_up->board = nullptr; // borramos la matriz porque ya la tenemos en el id
-        }
         if (e_up!=nullptr && // si es valido
-                !all->find(e_up->id)) { // si no esta en todos
-            open->push(e_up);
-            all->push(e_up->id);
+                !all->find(e_up->id)) { // si no esta en todos //esta busqueda en la tabla hash es de O(1)
+            e_up->deleteBoard(); // borramos la matriz porque ya la tenemos en el id
+            open->push(e_up); // se ingresa al heap ordenado por la heuristica
+            all->push(e_up->id); // se ingresa a la tabla hash para un rapido acceso
         }
 
         State *e_down = e->down();  // si genera estado invalido, genera nullptr
-        if(e_down != nullptr){
-            e_down->level = i;
-            e_down->parent = e;
-            e_down->i0 = e->i0+1;
-            e_down->j0 = e->j0;
-            e_down->calculateValue();
-            //calcula el id
-            for(int i = 0; i < e_down->size; i++){
-                for(int j = 0; j < e_down->size; j++){
-                    e_down->id = e_down->id * e_down->size * e_down->size + e_down->board[i][j];
-                }
-            }
-            int** aux;
-            aux = e_down->board;
-            for(int i = 0; i < e_down->size; i++){
-                delete [] aux[i];
-            }
-            delete [] aux;
-            e_down->board = nullptr;
-        }
         if (e_down!=nullptr &&
                 !all->find(e_down->id)) {
+            e_down->deleteBoard();
             open->push(e_down);
             all->push(e_down->id);
         }
 
         State *e_left = e->left();  // si genera estado invalido, genera nullptr
-        if(e_left != nullptr){
-            e_left->level = i;
-            e_left->parent = e;
-            e_left->i0 = e->i0;
-            e_left->j0 = e->j0-1;
-            e_left->calculateValue();
-            //calcula el id
-            for(int i = 0; i < e_left->size; i++){
-                for(int j = 0; j < e_left->size; j++){
-                    e_left->id = e_left->id * e_left->size * e_left->size + e_left->board[i][j];
-                }
-            }
-            int** aux;
-            aux = e_left->board;
-            for(int i = 0; i < e_left->size; i++){
-                delete [] aux[i];
-            }
-            delete [] aux;
-            e_left->board = nullptr;
-        }
         if (e_left!=nullptr &&
                 !all->find(e_left->id)){
+            e_left->deleteBoard();                    
             open->push(e_left);
             all->push(e_left->id);
         }
 
         State *e_right = e->right();  // si genera estado invalido, genera nullptr
-        if(e_right != nullptr){
-            e_right->level = i;
-            e_right->parent = e;
-            e_right->calculateValue();
-            //calcula el id
-            for(int i = 0; i < e_right->size; i++){
-                for(int j = 0; j < e_right->size; j++){
-                    e_right->id = e_right->id * e_right->size * e_right->size + e_right->board[i][j];
-                }
-            }
-            int** aux;
-            aux = e_right->board;
-            for(int i = 0; i < e_right->size; i++){
-                delete [] aux[i];
-            }
-            delete [] aux;
-            e_right->board = nullptr;
-        }
         if (e_right!=nullptr &&
                 !all->find(e_right->id)) {
+            e_right->deleteBoard();
             open->push(e_right);
             all->push(e_right->id);
         }

@@ -61,16 +61,14 @@ void State::print_board() {
 }
 
 void State::print() {
-    if (parent != nullptr) {
+    if (parent != nullptr){
        parent->print();
     } 
-    
-    print_board();
-    putchar('\n');
+    printf("%d\n", this->id);
 }
 
 bool State::isSol() {
-    return hits == this->size * this->size;
+    return this->hits == this->size * this->size;
 }
 
 State* State::copy() {
@@ -93,6 +91,10 @@ State * State::up() {
         new_state->board[i0][j0]=board[i0-1][j0];
         new_state->board[i0-1][j0]=0;
         new_state->i0--;
+        new_state->parent = this;
+        new_state->level = this->level + 1;
+        new_state->generateId();
+        new_state->calculateValue();
         return new_state;
     }
     return(nullptr);
@@ -104,6 +106,10 @@ State * State::down() {
         new_state->board[i0][j0]=board[i0+1][j0];
         new_state->board[i0+1][j0]=0;
         new_state->i0++;
+        new_state->parent = this;
+        new_state->level = this->level + 1;
+        new_state->generateId();
+        new_state->calculateValue();
         return new_state;
     }
     return(nullptr);
@@ -115,6 +121,10 @@ State * State::right() {
         new_state->board[i0][j0]=board[i0][j0+1];
         new_state->board[i0][j0+1]=0;
         new_state->j0++;
+        new_state->parent = this;
+        new_state->level = this->level + 1;
+        new_state->generateId();
+        new_state->calculateValue();
         return new_state;
     }
     return(nullptr);
@@ -126,6 +136,10 @@ State * State::left() {
         new_state->board[i0][j0]=board[i0][j0-1];
         new_state->board[i0][j0-1]=0;
         new_state->j0--;
+        new_state->parent = this;
+        new_state->level = this->level + 1;
+        new_state->generateId();
+        new_state->calculateValue();
         return new_state;
     }
     return(nullptr);
@@ -179,4 +193,20 @@ void State::calculateValue(){
     this->calculateHits();
     this->calculateDistance();
     this->value = 16 * level - distance;
+}
+void State:: generateId(){
+    this->id = 0;
+    int k = 1;
+    for(int i = 0; i < this->size; i++){
+        for(int j = 0; j < this->size; j++){
+            this->id = this->id * this->size * this->size + this->board[i][j];
+        }
+    }
+}
+
+void State::deleteBoard(){
+    for(int i = 0; i < this->size; i++){
+        delete [] this->board[i];
+    }
+    delete [] this->board;
 }
