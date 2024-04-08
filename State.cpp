@@ -1,5 +1,4 @@
 #include "State.h"
-
 State::State(){ 
     board = nullptr; //NULL
     size = 0;
@@ -209,4 +208,14 @@ void State::deleteBoard(){
         delete [] this->board[i];
     }
     delete [] this->board;
+}
+
+void State::generateBoard(){
+    int base = this->size * this->size;
+    for(int i = this->size - 1; i >= 0; i--){
+        for(int j = this->size - 1; j >= 0; j--){
+            this->board[i][j] = this->id % base;
+            this->id = this->id / base;
+        }
+    }
 }

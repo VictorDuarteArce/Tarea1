@@ -33,4 +33,5 @@ class State {
         int* find(int value); // busca la posicion de un valor
         void generateId(); // genera el id
         void deleteBoard(); // borra el tablero
+        void generateBoard(); //genera el tablero a partir de una id
 };
