@@ -1,8 +1,7 @@
 #include <iostream>
 class State {
     public:
-        long int id; // identificador del estado
-        int **board; // tablero size x size
+        long long unsigned int id; // identificador del estado
         int size;
         // al cargar el archivo busco donde esta el 0
         int i0; //fila del cero
@@ -31,7 +30,7 @@ class State {
         void calculateHits(); // calcula los aciertos
         void calculateDistance(); // calcula la distancia
         int* find(int value); // busca la posicion de un valor
-        void generateId(); // genera el id
+        void setId(int** board); // genera el id
         void deleteBoard(); // borra el tablero
-        void generateBoard(); //genera el tablero a partir de una id
+        int** getBoard(); //genera el tablero a partir de una id
 };

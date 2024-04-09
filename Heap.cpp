@@ -12,7 +12,7 @@ Heap::~Heap(){
 
 // aqui se define si vamos a mantener el heap como min heap o max heap
 // en este caso esta realizando un min heap  --> raiz es el menor
-void Heap::push(State* val) {
+void Heap::push(State* val){
     if (size == capacity) {
         printf("Heap lleno\n");
         State **arr_tmp = new State*[capacity*2];
@@ -60,12 +60,11 @@ State* Heap::pop(){
     return val;
 }
 void Heap::print() {
-    putchar('{');
     for(int i=0; i<size; i++) {
-        printf("%d ", arr[i]->value);
+        arr[i]->print_board();
+        putchar('\n');
     }
-    putchar('}');
-    putchar('\n');
+    printf("\n\n");
 }
 bool Heap::isEmpty() {
     return size == 0;

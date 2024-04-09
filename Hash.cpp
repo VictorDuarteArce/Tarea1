@@ -16,7 +16,7 @@ void Hash::clear(){
         }
     }
 }
-void Hash::push(long int state){
+void Hash::push(long long unsigned int state){
     int index = hashFunction(state);
     if(hashTable[index] == NULL){
         hashTable[index] = new Node(state);
@@ -28,7 +28,7 @@ void Hash::push(long int state){
         current->next = new Node(state);
     }
 }
-bool Hash::find(long int state){
+bool Hash::find(long long unsigned int state){
     int index = hashFunction(state);
     if(hashTable[index] != NULL){
         for(Node* current = hashTable[index]; current != NULL; current = current->next){
@@ -39,7 +39,7 @@ bool Hash::find(long int state){
     }
     return false;
 }
-int Hash::hashFunction(long int state){
+int Hash::hashFunction(long long unsigned int state){
     return state % 1000;
 }
 void Hash::print(){

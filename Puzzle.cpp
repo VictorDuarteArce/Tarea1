@@ -1,5 +1,6 @@
 #include "Puzzle.h"
 
+using namespace std;
 Puzzle::Puzzle() {
     size=0;
     board=nullptr;
@@ -21,13 +22,13 @@ State * Puzzle::generate_init(){
         return nullptr;
     }
     //generar id
-    e->generateId();
+    e->setId(board);
     // buscar el cero
-    for (int i=0; i < size; i++) {
-        for (int j=0; j < size; j++) {
+    for (int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
             if(board[i][j] == 0){
-                e->i0=i;
-                e->j0=j;
+                e -> i0 = i;
+                e -> j0 = j;
                 return e;
             }
         }
@@ -63,25 +64,24 @@ void Puzzle::solve(){
         //cout << "Expandiendo el estado" << endl;
         // expandir el estado e --> notar la repeticion que se hace (no es buena practica, deberia disponerse de un arreglo de movimientos posibles)
         State* e_up = e->up();  // si genera estado invalido, genera nullptr
+        //printf("Estado actual: %llu i0: %d j0: %d parent:%p\n", e_up->id, e_up->i0, e_up->j0, e_up->parent);
         if (e_up!=nullptr && // si es valido
-                !all->find(e_up->id)) { // si no esta en todos //esta busqueda en la tabla hash es de O(1)
-            e_up->deleteBoard(); // borramos la matriz porque ya la tenemos en el id
+                !all->find(e_up->id)){ // si no esta en todos //esta busqueda en la tabla hash es de O(1)
             open->push(e_up); // se ingresa al heap ordenado por la heuristica
             all->push(e_up->id); // se ingresa a la tabla hash para un rapido acceso
         }
 
         State *e_down = e->down();  // si genera estado invalido, genera nullptr
+        //if(e_down != nullptr) printf("Estado actual: %llu i0: %d j0: %d parent:%p\n", e_down->id, e_down->i0, e_down->j0, e_down->parent);
         if (e_down!=nullptr &&
                 !all->find(e_down->id)) {
-            e_down->deleteBoard();
             open->push(e_down);
             all->push(e_down->id);
         }
 
         State *e_left = e->left();  // si genera estado invalido, genera nullptr
         if (e_left!=nullptr &&
-                !all->find(e_left->id)){
-            e_left->deleteBoard();                    
+                !all->find(e_left->id)){                 
             open->push(e_left);
             all->push(e_left->id);
         }
@@ -89,7 +89,6 @@ void Puzzle::solve(){
         State *e_right = e->right();  // si genera estado invalido, genera nullptr
         if (e_right!=nullptr &&
                 !all->find(e_right->id)) {
-            e_right->deleteBoard();
             open->push(e_right);
             all->push(e_right->id);
         }
