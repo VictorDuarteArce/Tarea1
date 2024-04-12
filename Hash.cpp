@@ -16,28 +16,19 @@ void Hash::clear(){
         }
     }
 }
-void Hash::push(long long unsigned int state){
+void Hash::push(long long unsigned int state, long long unsigned int state1){
     int index = hashFunction(state);
     if(hashTable[index] == NULL){
-        hashTable[index] = new Node(state);
-    }else{
-        Node* current = hashTable[index];
-        while(current->next != NULL){
-            current = current->next;
-        }
-        current->next = new Node(state);
+        hashTable[index] = new AVL();
     }
+    hashTable[index]->push(state, state1);
 }
-bool Hash::find(long long unsigned int state){
+bool Hash::find(long long unsigned int state, long long unsigned int state1){
     int index = hashFunction(state);
-    if(hashTable[index] != NULL){
-        for(Node* current = hashTable[index]; current != NULL; current = current->next){
-            if(current->state_id == state){
-                return true;
-            }
-        }
+    if(hashTable[index] == NULL){
+        return false;
     }
-    return false;
+    return hashTable[index]->find(state, state1);
 }
 int Hash::hashFunction(long long unsigned int state){
     return state % 1000;
@@ -45,10 +36,7 @@ int Hash::hashFunction(long long unsigned int state){
 void Hash::print(){
     for(int i = 0; i < 1000; i++){
         if(hashTable[i] != NULL){
-            for(Node* current = hashTable[i]; current != NULL; current = current->next){
-                printf("%llu ", current->state_id);
-            }
-            putchar('\n');
+            hashTable[i]->print();
         }
     }
 }

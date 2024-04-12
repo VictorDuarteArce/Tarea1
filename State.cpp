@@ -29,16 +29,23 @@ State::~State() {
 
 void State:: setId(int** board){
     this->id = 0;
+    this->id1 = 0;
+    int k = 0;
     for(int i = 0; i < this->size; i++){
         for(int j = 0; j < this->size; j++){
-            this->id = this->id * this->size * this->size + board[i][j];
+            if(k < (this->size *this->size) / 2){
+                this->id = this->id * this->size * this->size + board[i][j];
+            }else{
+                this->id1 = this->id1 * this->size * this->size + board[i][j];
+            }
+            k++;
         }
     }
 }
 
 void State::print_board() {
     int**board = this->getBoard();
-    for(int i=0; i<size; i++) {
+    for(int i = 0; i < size; i++) {
         for(int j=0; j<size; j++) {
             std::cout << board[i][j] << " ";
         }
@@ -61,6 +68,7 @@ bool State::isSol() {
 State* State::copy() {
     State *new_state = new State(size, this);
     new_state->id = this->id;
+    new_state->id1 = this->id1;
     new_state->i0 = this->i0;
     new_state->j0 = this->j0;
     new_state->value = this->value;
@@ -212,23 +220,43 @@ int* State::find(int value){
 }
 void State::calculateValue(){
     this->calculateHits();
-    this->calculateDistance();
+    //this->calculateDistance();
     this->value = level;
 }
 
 int** State::getBoard(){
     long long unsigned int aux = this->id;
+    long long unsigned int aux1 = this->id1;
     int **board = new int*[this->size];
     for(int i = 0; i < this->size; i++){
         board[i] = new int[this->size];
     }
     int base = this->size * this->size;
+    int k = 0;
     for(int i = this->size - 1; i >= 0; i--){
         for(int j = this->size - 1; j >= 0; j--){
-            board[i][j] = this->id % base;
-            this->id = this->id / base;
+            if(this->size % 2){
+                if(k > this->size * this->size / 2){
+                    board[i][j] = this->id % base;
+                    this->id = this->id / base;
+                }else{
+                    board[i][j] = this->id1 % base;
+                    this->id1 = this->id1 / base;
+                }
+                k++;
+            }else{
+                if(k >= this->size * this->size / 2){
+                    board[i][j] = this->id % base;
+                    this->id = this->id / base;
+                }else{
+                    board[i][j] = this->id1 % base;
+                    this->id1 = this->id1 / base;
+                }
+                k++;
+            }
         }
     }
     this->id = aux;
+    this->id1 = aux1;
     return board;
 }

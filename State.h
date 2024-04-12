@@ -2,6 +2,7 @@
 class State {
     public:
         long long unsigned int id; // identificador del estado
+        long long unsigned int id1;
         int size;
         // al cargar el archivo busco donde esta el 0
         int i0; //fila del cero
@@ -30,7 +31,6 @@ class State {
         void calculateHits(); // calcula los aciertos
         void calculateDistance(); // calcula la distancia
         int* find(int value); // busca la posicion de un valor
-        void setId(int** board); // genera el id
-        void deleteBoard(); // borra el tablero
+        void setId(int** board); // genera el id a partir del tablero
         int** getBoard(); //genera el tablero a partir de una id
 };

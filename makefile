@@ -1,4 +1,4 @@
-all: State.o Puzzle.o Heap.o testState testPuzzle testHeap main 
+all: State.o Puzzle.o Heap.o testState testPuzzle testHeap testAVL main 
 
 State.o: State.cpp State.h
 	g++ -g -c State.cpp
@@ -12,6 +12,9 @@ Heap.o: Heap.cpp Heap.h
 Hash.o: Hash.cpp Hash.h
 	g++ -g -c Hash.cpp
 
+AVL.o: AVL.cpp AVL.h
+	g++ -g -c AVL.cpp
+
 testState: testState.cpp State.o
 	g++ -g State.o testState.cpp -o testState
 
@@ -21,11 +24,14 @@ testHeap: testHeap.cpp Heap.o State.o
 testPuzzle: testPuzzle.cpp Puzzle.o State.o
 	g++ -g State.o Puzzle.o testPuzzle.cpp -o testPuzzle
 
-testHash: testHash.cpp Hash.o State.o
-	g++ -g Hash.o State.o testHash.cpp -o testHash
+testHash: testHash.cpp Hash.o State.o AVL.o
+	g++ -g Hash.o State.o AVL.o testHash.cpp -o testHash
 
-main: Puzzle.o State.o Hash.o Heap.o main.cpp
-	g++ -g State.o Puzzle.o Hash.o Heap.o main.cpp -o main
+testAVL: testAVL.cpp AVL.o State.o
+	g++ -g AVL.o State.o testAVL.cpp -o testAVL
+	
+main: Puzzle.o State.o Hash.o Heap.o AVL.o main.cpp
+	g++ -g State.o Puzzle.o Hash.o Heap.o AVL.o main.cpp -o main
 
 clear:
 	rm -f *.o testState testPuzzle testHeap testHash main

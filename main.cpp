@@ -51,7 +51,7 @@ int main(){
     p->size = n;
     time_t ti = clock();
     p->solve();
-    time_t tf=clock();
+    time_t tf = clock();
     cout << "tiempo:" << (tf-ti);//CLOCKS_PER_SEC << " segundos" << endl;
     return 0;
 }
