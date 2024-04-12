@@ -44,6 +44,7 @@ void State:: setId(int** board){
 }
 
 void State::print_board() {
+    printf("Paso: %d\n", this->depth);
     int**board = this->getBoard();
     for(int i = 0; i < size; i++) {
         for(int j=0; j<size; j++) {
@@ -71,10 +72,10 @@ State* State::copy() {
     new_state->id1 = this->id1;
     new_state->i0 = this->i0;
     new_state->j0 = this->j0;
-    new_state->value = this->value;
+    new_state->heuristic = this->heuristic;
     new_state->distance = this->distance;
     new_state->hits = this->hits;
-    new_state->level = this->level;
+    new_state->depth = this->depth;
     return new_state;
 }
 
@@ -85,14 +86,14 @@ State * State::up() {
         board[i0][j0] = board[i0-1][j0];
         board[i0-1][j0] = 0;
         new_state->i0--;
-        new_state->level = this->level + 1;
+        new_state->depth = this->depth + 1;
         new_state->setId(board);
         int**aux = board;
         for(int i = 0; i < size; i++){
             delete [] board[i];
         }
         delete [] aux;
-        new_state->calculateValue();
+        new_state->calculateHeuristic();
         return new_state;
     }
     return(nullptr);
@@ -105,14 +106,14 @@ State * State::down() {
         board[i0][j0]=board[i0+1][j0];
         board[i0+1][j0]=0;
         new_state->i0++;
-        new_state->level = this->level + 1;
+        new_state->depth = this->depth + 1;
         new_state->setId(board);
         int**aux = board;
         for(int i = 0; i < size; i++){
             delete [] board[i];
         }
         delete [] aux;
-        new_state->calculateValue();
+        new_state->calculateHeuristic();
         return new_state;
     }
     return(nullptr);
@@ -131,8 +132,8 @@ State * State::right() {
             delete [] board[i];
         }
         delete [] aux;        
-        new_state->level = this->level + 1;        
-        new_state->calculateValue();
+        new_state->depth = this->depth + 1;        
+        new_state->calculateHeuristic();
         return new_state;
     }
     return(nullptr);
@@ -145,14 +146,14 @@ State * State::left() {
         board[i0][j0]=board[i0][j0-1];
         board[i0][j0-1]=0;
         new_state->j0--;        
-        new_state->level = this->level + 1;
+        new_state->depth = this->depth + 1;
         new_state->setId(board);
         int**aux = board;
         for(int i = 0; i < size; i++){
             delete [] board[i];
         }
         delete [] aux;
-        new_state->calculateValue();
+        new_state->calculateHeuristic();
         return new_state;
     }
     return(nullptr);
@@ -184,15 +185,21 @@ void State::calculateHits(){
 void State::calculateDistance(){
     int value = 0;
     int k = 1;
+    int** board = getBoard();
     for(int i = 0; i < size; i++) {
         for(int j = 0; j < size; j++) {
-            int *aux = this->find(k % (this->size * this->size));
-            value += (i - aux[0]) * (i - aux[0]) + (j - aux[1]) * (j - aux[1]);
-            k++;this->value = 1 * level - hits;
-            delete aux;
+            if (board[i][j] != 0){
+                int i2=(board[i][j]-1)/size;
+                int j2=(board[i][j]-1)%size;
+                distance+=abs(i-i2)+abs(j-j2);
+            }
         }
     }
     this->distance = value;
+    for(int i = 0; i < size; i++){
+        delete [] board[i];
+    }
+    delete [] board;
 }
 int* State::find(int value){
     int**board = this->getBoard();
@@ -218,10 +225,15 @@ int* State::find(int value){
     delete [] aux;
     return nullptr;
 }
-void State::calculateValue(){
+void State::calculateHeuristic(){
     this->calculateHits();
-    //this->calculateDistance();
-    this->value = level;
+    this->calculateDistance();
+    if(size > 4)
+    this->heuristic = 0.0182*depth/size + 0.1 *distance/size + 0.12*(size - hits)/size;
+    else if(size == 4)
+    this->heuristic = 0.0182*depth/size + distance/size + 0.12*(size - hits)/size;
+    else
+    this->heuristic = depth;
 }
 
 int** State::getBoard(){

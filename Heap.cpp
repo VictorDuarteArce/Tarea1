@@ -26,7 +26,7 @@ void Heap::push(State* val){
     arr[size] = val;
     size++;
     int i = size-1;
-    while(i != 0 && arr[i]->value < arr[(i-1)/2]->value) { // min heap
+    while(i != 0 && arr[i]->heuristic < arr[(i-1)/2]->heuristic) { // min heap
         State* temp = arr[i]; // realizamos el  swap
         arr[i] = arr[(i-1)/2];
         arr[(i-1)/2] = temp;
@@ -46,10 +46,10 @@ State* Heap::pop(){
         int left = 2*i+1;
         int right = 2*i+2;
         int min = left;
-        if (right < size && arr[right]->value < arr[left]->value) {
+        if (right < size && arr[right]->heuristic < arr[left]->heuristic) {
             min = right;
         }
-        if (arr[i]->value < arr[min]->value) {
+        if (arr[i]->heuristic < arr[min]->heuristic) {
             break; // ya esta ordenado
         }
         State* temp = arr[i]; // si no cuple orden entonces hacemos el swap

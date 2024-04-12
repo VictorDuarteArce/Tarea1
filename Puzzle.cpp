@@ -16,8 +16,8 @@ State * Puzzle::generate_init(){
     e->parent=nullptr;
     e->i0=-1; // caso de no encontrar el cero
     e->j0=-1;
-    e->value = 0;
-    e->level = 0;
+    e->heuristic = 0;
+    e->depth = 0;
     if (board==nullptr) {
         cout << "No se ha cargado el tablero" << endl;
         return nullptr;
@@ -33,7 +33,7 @@ State * Puzzle::generate_init(){
     e->i0 = zero[0];
     e->j0 = zero[1];
     //Calcula la heuristica
-    e->calculateValue();
+    e->calculateHeuristic();
     return e;
 }
 

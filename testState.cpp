@@ -21,7 +21,7 @@ int main(){
     State *e_copy = e->down();
     printf("id: %llu \nid1: %llu\n", e_copy->id, e_copy->id1);
     e_copy->print_board();
-    e->calculateValue();
+    e->calculateHeuristic();
     printf("isSol: %d\n", e->isSol());
     printf("hits: %d", e->hits);
     return 0;

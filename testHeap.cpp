@@ -4,12 +4,12 @@ int main() {
     Heap *h = new Heap(2);
     for(int i=0; i<128; i++){
         State *s = new State();
-        s->value = i;
+        s->heuristic = i;
         h->push(s);
     }
 
     for(int i=0; i<128; i++){
         State *s = h->pop();
-        printf("%d\n", s->value);
+        printf("%d\n", s->heuristic);
     }
 }

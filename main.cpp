@@ -49,9 +49,10 @@ int main(){
     Puzzle *p = new Puzzle();
     p->board = board;
     p->size = n;
-    time_t ti = clock();
+    float ti = clock();
     p->solve();
-    time_t tf = clock();
-    cout << "tiempo:" << (tf-ti);//CLOCKS_PER_SEC << " segundos" << endl;
+    float tf = clock();
+    float time = (tf-ti)/CLOCKS_PER_SEC;
+    cout << "tiempo:" << time << " segundos" << endl;
     return 0;
 }
