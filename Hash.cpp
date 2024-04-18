@@ -16,21 +16,21 @@ void Hash::clear(){
         }
     }
 }
-void Hash::push(long long unsigned int state, long long unsigned int state1){
+void Hash::push(long unsigned int state, long unsigned int state1){
     int index = hashFunction(state);
     if(hashTable[index] == NULL){
         hashTable[index] = new AVL();
     }
     hashTable[index]->push(state, state1);
 }
-bool Hash::find(long long unsigned int state, long long unsigned int state1){
+bool Hash::find(long unsigned int state, long unsigned int state1){
     int index = hashFunction(state);
     if(hashTable[index] == NULL){
         return false;
     }
     return hashTable[index]->find(state, state1);
 }
-int Hash::hashFunction(long long unsigned int state){
+int Hash::hashFunction(long unsigned int state){
     return state % 1000;
 }
 void Hash::print(){

@@ -1,17 +1,17 @@
 #include <iostream>
 class State {
     public:
-        long long unsigned int id; // identificador del estado
-        long long unsigned int id1;
+        long unsigned int *id; // identificador del estado
+        long unsigned int *id1;
         int size;
         // al cargar el archivo busco donde esta el 0
-        int i0; //fila del cero
-        int j0; // columna del cero
+        int *i0; //fila del cero
+        int *j0; // columna del cero
         State *parent;
-        float heuristic; // valor de la heuristica
-        int distance; // distancia de manhattan
-        int hits; // aciertos
-        int depth; // nivel del arbol
+        float *heuristic; // valor de la heuristica
+        int *distance; // distancia de manhattan
+        int *hits; // aciertos
+        int *depth; // nivel del arbol
         State();
         State(int size);
         State(int size, State *parent);

@@ -67,11 +67,11 @@ int AVL::max(int a, int b){
     return (a > b)? a : b;
 }
 
-void AVL::push(long long unsigned int id, long long unsigned int id1){
+void AVL::push(long unsigned int id, long unsigned int id1){
     root = push(root, id, id1);
 }
 
-NodeAVL* AVL::push(NodeAVL* node, long long unsigned int id, long long unsigned int id1){
+NodeAVL* AVL::push(NodeAVL* node, long unsigned int id, long unsigned int id1){
     if(node == nullptr)
         return new NodeAVL(id, id1);
 
@@ -112,7 +112,7 @@ void AVL::inOrder(){
 void AVL::inOrder(NodeAVL *node){
     if(node != nullptr){
         inOrder(node->left);
-        printf("%llu %llu\n", node->id, node->id1);
+        printf("%lu %lu\n", node->id, node->id1);
         inOrder(node->right);
     }
 }
@@ -123,7 +123,7 @@ void AVL::preOrder(){
 }
 void AVL::preOrder(NodeAVL *node){
     if(node != nullptr){
-        printf("%llu %llu\n", node->id, node->id1);
+        printf("%lu %lu\n", node->id, node->id1);
         preOrder(node->left);
         preOrder(node->right);
     }
@@ -137,15 +137,15 @@ void AVL::postOrder(NodeAVL *node){
     if(node != nullptr){
         postOrder(node->left);
         postOrder(node->right);
-        printf("%llu %llu\n", node->id, node->id1);
+        printf("%lu %lu\n", node->id, node->id1);
     }
 }
 
-bool AVL::find(long long unsigned int id, long long unsigned int id1){
+bool AVL::find(long unsigned int id, long unsigned int id1){
     return find(root, id, id1);
 }
 
-bool AVL::find(NodeAVL *node, long long unsigned int id, long long unsigned int id1){
+bool AVL::find(NodeAVL *node, long unsigned int id, long unsigned int id1){
     if(node == nullptr)
         return false;
     if(node->id == id && node->id1 == id1)
@@ -169,7 +169,7 @@ void AVL::print(){
 void AVL::print(NodeAVL *node){
     if(node != nullptr){
         print(node->left);
-        printf("(%llu,%llu) ", node->id, node->id1);
+        printf("(%lu,%lu) ", node->id, node->id1);
         print(node->right);
     }
 }
