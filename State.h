@@ -3,14 +3,14 @@ class State {
     public:
         long unsigned int *id; // identificador del estado
         long unsigned int *id1;
-        int size;
+        int *size;
         // al cargar el archivo busco donde esta el 0
         int *i0; //fila del cero
         int *j0; // columna del cero
         State *parent;
         float *heuristic; // valor de la heuristica
         int *distance; // distancia de manhattan
-        int *hits; // aciertos
+        int *misses; // aciertos
         int *depth; // nivel del arbol
         State();
         State(int size);
@@ -28,7 +28,7 @@ class State {
         bool equals(State *s); // compara dos estados
         //bool equals(State *s); // compara dos estados
         void calculateHeuristic(); // calcula el valor de la heuristica
-        void calculateHits(); // calcula los aciertos
+        void calculateMisses(); // calcula los aciertos
         void calculateDistance(); // calcula la distancia
         int* find(int value); // busca la posicion de un valor
         void setId(int** board); // genera el id a partir del tablero

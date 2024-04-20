@@ -12,26 +12,24 @@ Puzzle::Puzzle() {
 State * Puzzle::generate_init(){
     // asumiendo que board ya esta cargado
     State *e = new State(size, nullptr, board);
-    e->id = 0;
-    e->parent=nullptr;
-    e->i0=-1; // caso de no encontrar el cero
-    e->j0=-1;
-    e->heuristic = 0;
-    e->depth = 0;
+    *e->heuristic = 0;
+    *e->depth = 0;
     if (board == nullptr) {
         printf("No se ha cargado el tablero\n");
         return nullptr;
     }
     //generar id
     e->setId(board);
+    printf("id: %lu %lu\n", *e->id, *e->id1);
+    e->print_board();
     // buscar el cero
     int* zero = e->find(0);
     if (zero == nullptr) {
         cout << "No se encontro el cero" << endl;
         return nullptr;
     }
-    e->i0 = zero[0];
-    e->j0 = zero[1];
+    *e->i0 = zero[0];
+    *e->j0 = zero[1];
     delete [] zero;
     //Calcula la heuristica
     e->calculateHeuristic();
@@ -47,7 +45,7 @@ void Puzzle::solve(){
         return;
     }
     open->push(e_init); // agrega en los abierto el tablero inicial
-    all->push(e_init->id, e_init->id1); // agrega en todos (ex cerrados)el tablero inicial
+    all->push(*e_init->id, *e_init->id1); // agrega en todos (ex cerrados)el tablero inicial
     while (!open->isEmpty()){ // mientras existan nodos por visitar
         //printf("Open %d\n", i);
         //open->print();
@@ -69,9 +67,11 @@ void Puzzle::solve(){
         //printf("up\n");
         //e_up->print_board();
         if (e_up != nullptr && // si es valido
-                !all->find(e_up->id, e_up->id1)){ // si no esta en todos //esta busqueda en la tabla hash es de O(1)
+                !all->find(*e_up->id, *e_up->id1)){ // si no esta en todos //esta busqueda en la tabla hash es de O(1)
             open->push(e_up); // se ingresa al heap ordenado por la heuristica
-            all->push(e_up->id, e_up->id1); // se ingresa a la tabla hash para un rapido acceso
+            all->push(*e_up->id, *e_up->id1); // se ingresa a la tabla hash para un rapido acceso
+        }else if(e_up != nullptr){
+            delete e_up;
         }
 
         State *e_down = e->down();
@@ -79,30 +79,36 @@ void Puzzle::solve(){
         //printf("down\n");
         //e_down->print_board();
         if (e_down!=nullptr &&
-                !all->find(e_down->id, e_down->id1)){
+                !all->find(*e_down->id, *e_down->id1)){
             open->push(e_down);
-            all->push(e_down->id, e_down->id1);
+            all->push(*e_down->id, *e_down->id1);
+        }else if(e_down != nullptr){
+            delete e_down;
         }
 
         State *e_left = e->left();
         //printf("left\n");
         //e_left->print_board();
         if (e_left!=nullptr &&
-                !all->find(e_left->id, e_left->id1)){
+                !all->find(*e_left->id, *e_left->id1)){
             open->push(e_left);
-            all->push(e_left->id, e_left->id1);
+            all->push(*e_left->id, *e_left->id1);
+        }else if(e_left != nullptr){
+            delete e_left;
         }
 
         State *e_right = e->right();
         //printf("right\n");
         //e_right->print_board();
         if (e_right!=nullptr &&
-                !all->find(e_right->id, e_right->id1)) {
+                !all->find(*e_right->id, *e_right->id1)) {
             open->push(e_right);
-            all->push(e_right->id, e_right->id1);
+            all->push(*e_right->id, *e_right->id1);
+        }else if(e_right != nullptr){
+            delete e_right;
         }
     }
-    printf("No se encontro solucion");
+    printf("No se encontro solucion\n");
     delete all;
     delete open;
 }
