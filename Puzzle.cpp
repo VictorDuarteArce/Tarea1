@@ -20,7 +20,7 @@ State * Puzzle::generate_init(){
     }
     //generar id
     e->setId(board);
-    printf("id: %lu %lu\n", *e->id, *e->id1);
+    printf("id: %llu %llu\n", *e->id, *e->id1);
     e->print_board();
     // buscar el cero
     int* zero = e->find(0);
@@ -50,11 +50,11 @@ void Puzzle::solve(){
         //printf("Open %d\n", i);
         //open->print();
         State* e = open->pop(); // deberia obtener el mejor estado
-        //printf("Estado actual: %lu %lu i0: %d j0: %d parent:%p\n", e->id, e->id1, e->i0, e->j0, e->parent);
+        //printf("Estado actual: %llu %llu i0: %d j0: %d parent:%p\n", e->id, e->id1, e->i0, e->j0, e->parent);
         //printf("All %d\n", i);
         //all->print();
         if (e->isSol()){
-            printf("Encontramos la solucion\n");
+            printf("Encontramos la sollucion\n");
             e->print();
             delete open;
             delete all;
@@ -63,7 +63,7 @@ void Puzzle::solve(){
         //cout << "Expandiendo el estado" << endl;
         // expandir el estado e --> notar la repeticion que se hace (no es buena practica, deberia disponerse de un arreglo de movimientos posibles)
         State* e_up = e->up();
-        //printf("Estado actual: %lu %lu i0: %d j0: %d parent:%p\n", e_up->id, e_up->id1, e_up->i0, e_up->j0, e_up->parent);
+        //printf("Estado actual: %llu %llu i0: %d j0: %d parent:%p\n", e_up->id, e_up->id1, e_up->i0, e_up->j0, e_up->parent);
         //printf("up\n");
         //e_up->print_board();
         if (e_up != nullptr && // si es valido
@@ -71,11 +71,12 @@ void Puzzle::solve(){
             open->push(e_up); // se ingresa al heap ordenado por la heuristica
             all->push(*e_up->id, *e_up->id1); // se ingresa a la tabla hash para un rapido acceso
         }else if(e_up != nullptr){
+            e_up->~State();
             delete e_up;
         }
 
         State *e_down = e->down();
-        //if(e_down != nullptr) printf("Estado actual: %lu i0: %d j0: %d parent:%p\n", e_down->id, e_down->i0, e_down->j0, e_down->parent);
+        //if(e_down != nullptr) printf("Estado actual: %llu i0: %d j0: %d parent:%p\n", e_down->id, e_down->i0, e_down->j0, e_down->parent);
         //printf("down\n");
         //e_down->print_board();
         if (e_down!=nullptr &&
@@ -83,6 +84,7 @@ void Puzzle::solve(){
             open->push(e_down);
             all->push(*e_down->id, *e_down->id1);
         }else if(e_down != nullptr){
+            e_down->~State();
             delete e_down;
         }
 
@@ -94,6 +96,7 @@ void Puzzle::solve(){
             open->push(e_left);
             all->push(*e_left->id, *e_left->id1);
         }else if(e_left != nullptr){
+            e_left->~State();
             delete e_left;
         }
 
@@ -105,10 +108,11 @@ void Puzzle::solve(){
             open->push(e_right);
             all->push(*e_right->id, *e_right->id1);
         }else if(e_right != nullptr){
+            e_right->~State();
             delete e_right;
         }
     }
-    printf("No se encontro solucion\n");
+    printf("No se encontro sollucion\n");
     delete all;
     delete open;
 }

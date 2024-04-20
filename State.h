@@ -1,8 +1,8 @@
 #include <iostream>
 class State {
     public:
-        long unsigned int *id; // identificador del estado
-        long unsigned int *id1;
+        long long unsigned int *id; // identificador del estado
+        long long unsigned int *id1;
         int *size;
         // al cargar el archivo busco donde esta el 0
         int *i0; //fila del cero

@@ -1,7 +1,7 @@
 #include "State.h"
 State::State(){
-    id = new long unsigned int(0);
-    id1 = new long unsigned int(0);
+    id = new long long unsigned int(0);
+    id1 = new long long unsigned int(0);
     size = new int(0);
     i0 = new int(-1);
     j0 = new int(-1);
@@ -12,9 +12,9 @@ State::State(){
     parent = nullptr;
 }
 
-State::State(int n) {
-    id = new long unsigned int(0);
-    id1 = new long unsigned int(0);
+State::State(int n){
+    id = new long long unsigned int(0);
+    id1 = new long long unsigned int(0);
     size = new int(n);
     i0 = new int(-1);
     j0 = new int(-1);
@@ -26,8 +26,8 @@ State::State(int n) {
 }
 
 State::State(int size, State *parent){
-    id = new long unsigned int(0);
-    id1 = new long unsigned int(0);
+    id = new long long unsigned int(0);
+    id1 = new long long unsigned int(0);
     this->size = new int(size);
     if(parent == nullptr){
         i0 = new int(-1);
@@ -43,8 +43,8 @@ State::State(int size, State *parent){
     this->parent = parent;
 }
 State::State(int size, State *parent, int **board) {
-    id = new long unsigned int;
-    id1 = new long unsigned int;
+    id = new long long unsigned int;
+    id1 = new long long unsigned int;
     this->size = new int(size);
     if(parent == nullptr){
         i0 = new int(-1);

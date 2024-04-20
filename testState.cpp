@@ -1,7 +1,7 @@
 #include "State.h"
 
 int main(){
-    State *e = new State(4);
+    State *e = new State(5);
     int**board = new int*[*e->size];
     for(int i = 0; i < *e->size; i++){
         board[i] = new int[*e->size];
