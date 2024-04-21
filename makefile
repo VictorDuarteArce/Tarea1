@@ -1,4 +1,4 @@
-FLAG ?= -g
+FLAG ?= -O2
 all: State.o Puzzle.o Heap.o testState testPuzzle testHeap testAVL main 
 
 State.o: State.cpp State.h
