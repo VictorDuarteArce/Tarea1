@@ -4,7 +4,7 @@ int main() {
     Puzzle *p = new Puzzle();
     p->board = new int*[2];
     p->size = 2;
-
+    
     for(int i = 0; i < 2; i++) {
         p->board[i] = new int[2];
     }

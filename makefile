@@ -22,8 +22,8 @@ testState: testState.cpp State.o
 testHeap: testHeap.cpp Heap.o State.o
 	g++ $(FLAG) Heap.o State.o testHeap.cpp -o testHeap
 
-testPuzzle: testPuzzle.cpp Puzzle.o State.o
-	g++ $(FLAG) State.o Puzzle.o testPuzzle.cpp -o testPuzzle
+testPuzzle: testPuzzle.cpp Puzzle.o State.o AVL.o Hash.o Heap.o
+	g++ $(FLAG) State.o Puzzle.o AVL.o Hash.o Heap.o testPuzzle.cpp -o testPuzzle
 
 testHash: testHash.cpp Hash.o State.o AVL.o
 	g++ $(FLAG) Hash.o State.o AVL.o testHash.cpp -o testHash

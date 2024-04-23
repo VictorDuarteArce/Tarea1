@@ -52,7 +52,7 @@ void Puzzle::solve(){
         //printf("All %d\n", i);
         //all->print();
         if (e->isSol()){
-            printf("Encontramos la sollucion\n");
+            printf("Encontramos la solucion\n");
             e->print();
             delete open;
             delete all;
