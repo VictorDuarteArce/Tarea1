@@ -20,8 +20,6 @@ State * Puzzle::generate_init(){
     }
     //generar id
     e->setId(board);
-    printf("id: %llu %llu\n", *e->id, *e->id1);
-    e->print_board();
     // buscar el cero
     int* zero = e->find(0);
     if (zero == nullptr) {
